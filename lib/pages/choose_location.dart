@@ -35,11 +35,25 @@ class _ChooseLocationState extends State<ChooseLocation> {
                   padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
                   child: Card(
                       child: ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            updateTime(position);
+                          },
                           title: Text(locations[position].location),
                           leading: CircleAvatar(
                               backgroundImage: AssetImage(
                                   'assets/${locations[position].flag}')))));
             }));
+  }
+
+  void updateTime(int position) async {
+    WorldTime selectedWorldTime = locations[position];
+    await selectedWorldTime.getTime();
+    // navigate to home screen
+    Navigator.pop(context, {
+      'location': selectedWorldTime.location,
+      'time': selectedWorldTime.time,
+      'flag': selectedWorldTime.flag,
+      'isDaytime': selectedWorldTime.isDaytime
+    });
   }
 }
